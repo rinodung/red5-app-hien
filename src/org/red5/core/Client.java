@@ -9,7 +9,7 @@ public class Client  implements Externalizable
 {
 	private String name;
 	private String address;
-	private int vote_status;
+	private int status;
 	private int client_id;
 	private int client_cer;
 	private String client_type;
@@ -40,10 +40,10 @@ public class Client  implements Externalizable
 		this.client_cer = _client_cer;
 	}
 	
-	public Client(String name, String address, int vote_status,int client_id, int client_cer, String client_type, String client_icon_name, String client_icon_position){
+	public Client(String name, String address, int status,int client_id, int client_cer, String client_type, String client_icon_name, String client_icon_position){
 	    setName(name);
 	    setAddress(address);
-	    setVote_status(vote_status);
+	    setstatus(status);
 	    setclient_id(client_id);
 	    setclient_cer(client_cer);
 	    setclient_type(client_type);
@@ -51,12 +51,12 @@ public class Client  implements Externalizable
 	    this.setclient_icon_position(client_icon_position);
 	}
 	
-	public int getVote_status() {
-		return vote_status;
+	public int getstatus() {
+		return status;
 	}
 	
-	public void setVote_status(int vote_status) {
-		this.vote_status = vote_status;
+	public void setstatus(int status) {
+		this.status = status;
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class Client  implements Externalizable
 	{
 	    out.writeObject(this.name);
 	    out.writeObject(this.address);
-	    out.writeObject(this.vote_status);
+	    out.writeObject(this.status);
 	    out.writeObject(this.client_id);
 	    out.writeObject(this.client_cer);
 	    out.writeObject(this.client_type);
@@ -97,7 +97,7 @@ public class Client  implements Externalizable
   	{
 	    this.name = ((String)in.readObject());
 	    this.address = ((String)in.readObject());
-	    this.vote_status = ((Integer)in.readObject());
+	    this.status = ((Integer)in.readObject());
 	    this.client_id = ((Integer)in.readObject());
 	    this.client_cer = ((Integer)in.readObject());
 	    this.client_type = ((String)in.readObject());

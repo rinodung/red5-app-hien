@@ -109,7 +109,7 @@ private HashMap<String,Integer> HashMap_ClientHash;
     
     System.out.println("user id: "+ user_id + "user name: " + user_name + "type_client: " + type_client + " icon name: " + icon_name);
     
-    int vote_status = 1;
+    int client_status = 1;
     IClient client = conn.getClient();
     if (scope != null)
     {
@@ -124,7 +124,7 @@ private HashMap<String,Integer> HashMap_ClientHash;
       String name = (String)params[0];
       String address = conn.getRemoteAddress()+":"+conn.getRemotePort();
 
-      Client info = new Client(name, address,vote_status,Integer.valueOf(client.getId()),Integer.valueOf(client_cer),client_type, icon_name, icon_position);
+      Client info = new Client(name, address,client_status,Integer.valueOf(client.getId()),Integer.valueOf(client_cer),client_type, icon_name, icon_position);
       client.setAttribute("info", info);
     }
 
@@ -282,10 +282,10 @@ private HashMap<String,Integer> HashMap_ClientHash;
 		  	System.out.println("Client id: "+client_id);	  
 		    Map online_list = (HashMap)so_ol.getAttribute("ol");
 		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
-		    client.setVote_status(2);
+		    client.setstatus(2);
 		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
 
-		    System.out.println("Value: "+String.valueOf(client.getVote_status()));
+		    System.out.println("Value: "+String.valueOf(client.getstatus()));
 		    
 
 		    if (so_ol != null)
@@ -305,10 +305,10 @@ private HashMap<String,Integer> HashMap_ClientHash;
 		  	System.out.println("Client id: "+client_id);	  
 		    Map online_list = (HashMap)so_ol.getAttribute("ol");
 		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
-		    client.setVote_status(1);
+		    client.setstatus(1);
 		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
 
-		    System.out.println("Value: "+String.valueOf(client.getVote_status()));
+		    System.out.println("Value: "+String.valueOf(client.getstatus()));
 		    
 
 		    if (so_ol != null)
@@ -327,10 +327,10 @@ private HashMap<String,Integer> HashMap_ClientHash;
         	
         	 Map online_list = (HashMap)so_ol.getAttribute("ol");
  		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
- 		    client.setVote_status(3);
+ 		    client.setstatus(3);
  		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
 
- 		    System.out.println("Value: "+String.valueOf(client.getVote_status()));
+ 		    System.out.println("Value: "+String.valueOf(client.getstatus()));
  		    
 
  		    if (so_ol != null)
@@ -349,10 +349,10 @@ private HashMap<String,Integer> HashMap_ClientHash;
         	
         	 Map online_list = (HashMap)so_ol.getAttribute("ol");
  		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
- 		    client.setVote_status(1);
+ 		    client.setstatus(1);
  		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
 
- 		    System.out.println("Value: "+String.valueOf(client.getVote_status()));
+ 		    System.out.println("Value: "+String.valueOf(client.getstatus()));
  		    
 
  		    if (so_ol != null)
@@ -416,7 +416,118 @@ private HashMap<String,Integer> HashMap_ClientHash;
  		      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
  		      so_ol.endUpdate();
  		    }
-	  }	  
+	  }
+	  
+	  /**
+	   * Set Client Status
+	   * 1. Bình thường	   * 
+	   * 2. giơ tay phát biểu
+	   * 3. phát biểu
+	   * 4. lắc đầu			
+	   */
+	  if(command.equals("setStatus")) {
+		// vote
+		  if(agrs.equals("vote"))
+		  {
+			   int client_id =  HashMap_ClientHash.get(client_cer);
+		
+//			  	l.add(command+"-"+String.valueOf(client_id));
+//			  	so_ol.sendMessage("receiveCommand", l);
+			  	System.out.println("Client id: "+client_id);	  
+			    Map online_list = (HashMap)so_ol.getAttribute("ol");
+			    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+			    
+			    //2 = vote
+			    client.setstatus(2);
+			    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+			    System.out.println("vote Value: "+String.valueOf(client.getstatus()));
+			    
+
+			    if (so_ol != null)
+			    {
+			      so_ol.beginUpdate();
+			      so_ol.removeAttribute("ol");
+			      so_ol.setAttribute("ol", online_list);
+			      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+			      so_ol.endUpdate();
+			    }
+		  }
+		  
+		  // cancel vote
+		  if(agrs.equals("canvote"))
+		  {
+			   int client_id =  HashMap_ClientHash.get(client_cer);
+
+			
+			  	System.out.println("Client id: "+client_id);	  
+			    Map online_list = (HashMap)so_ol.getAttribute("ol");
+			    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+			    // 1 = cancel vote
+			    client.setstatus(1);
+			    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+			    System.out.println("canvote Value: "+String.valueOf(client.getstatus()));
+			    
+
+			    if (so_ol != null)
+			    {
+			      so_ol.beginUpdate();
+			      so_ol.removeAttribute("ol");
+			      so_ol.setAttribute("ol", online_list);
+			      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+			      so_ol.endUpdate();
+			    }
+		  }
+		  
+		  // giao vien cho phep phat bieu
+		  if(agrs.equals("accept"))
+		  {
+			  l.add(command+"-"+String.valueOf(client_cer));
+	        	so_ol.sendMessage("receiveCommand", l);
+	        	
+	        	 Map online_list = (HashMap)so_ol.getAttribute("ol");
+	 		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+	 		    client.setstatus(3);
+	 		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+	 		    System.out.println("accept Value: "+String.valueOf(client.getstatus()));
+	 		    
+
+	 		    if (so_ol != null)
+	 		    {
+	 		      so_ol.beginUpdate();
+	 		      so_ol.removeAttribute("ol");
+	 		      so_ol.setAttribute("ol", online_list);
+	 		      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+	 		      so_ol.endUpdate();
+	 		    }
+		  }
+		  
+		  // giao vien tu choi phat bieu
+		  if(agrs.equals("reject"))
+		  {
+			  	l.add(command+"-"+String.valueOf(client_cer));
+	        	so_ol.sendMessage("receiveCommand", l);
+	        	
+	        	 Map online_list = (HashMap)so_ol.getAttribute("ol");
+	 		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+	 		    client.setstatus(1);
+	 		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+	 		    System.out.println("reject Value: "+String.valueOf(client.getstatus()));
+	 		    
+
+	 		    if (so_ol != null)
+	 		    {
+	 		      so_ol.beginUpdate();
+	 		      so_ol.removeAttribute("ol");
+	 		      so_ol.setAttribute("ol", online_list);
+	 		      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+	 		      so_ol.endUpdate();
+	 		    }
+		  }
+	  }
 
   }
   public String getOldMessage(String room)
