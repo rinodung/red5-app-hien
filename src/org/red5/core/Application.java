@@ -105,7 +105,7 @@ private HashMap<String,Integer> HashMap_ClientHash;
     String type_client = (String)params[2];
     String icon_name = (String)params[3];
     String icon_position = (String)params[4];
-    
+    String icon_action = (String)params[5];
     
     System.out.println("user id: "+ user_id + "user name: " + user_name + "type_client: " + type_client + " icon name: " + icon_name);
     
@@ -124,7 +124,7 @@ private HashMap<String,Integer> HashMap_ClientHash;
       String name = (String)params[0];
       String address = conn.getRemoteAddress()+":"+conn.getRemotePort();
 
-      Client info = new Client(name, address,client_status,Integer.valueOf(client.getId()),Integer.valueOf(client_cer),client_type, icon_name, icon_position);
+      Client info = new Client(name, address,client_status,Integer.valueOf(client.getId()),Integer.valueOf(client_cer),client_type, icon_name, icon_position, icon_action);
       client.setAttribute("info", info);
     }
 
@@ -418,12 +418,35 @@ private HashMap<String,Integer> HashMap_ClientHash;
  		    }
 	  }
 	  
+	  if(command.equals("setAvatarAction"))
+	  {
+		  	System.out.println(client_cer+ " setAvatarAction: "+ agrs);
+		  	l.add(command+"-"+String.valueOf(client_cer));
+        	so_ol.sendMessage("receiveCommand", l);
+        	
+        	Map online_list = (HashMap)so_ol.getAttribute("ol");
+ 		    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+ 		    client.setclient_icon_action(agrs);
+ 		    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client); 		    
+ 		    
+
+ 		    if (so_ol != null)
+ 		    {
+ 		      so_ol.beginUpdate();
+ 		      so_ol.removeAttribute("ol");
+ 		      so_ol.setAttribute("ol", online_list);
+ 		      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+ 		      so_ol.endUpdate();
+ 		    }
+	  }
+	  
 	  /**
 	   * Set Client Status
 	   * 1. Bình thường	   * 
 	   * 2. giơ tay phát biểu
 	   * 3. phát biểu
-	   * 4. lắc đầu			
+	   * 4. lắc đầu
+	   * 5. chớp mắt (wink)		
 	   */
 	  if(command.equals("setStatus")) {
 		// vote
@@ -526,7 +549,8 @@ private HashMap<String,Integer> HashMap_ClientHash;
 	 		      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
 	 		      so_ol.endUpdate();
 	 		    }
-		  }
+		  }		  
+		
 	  }
 
   }
