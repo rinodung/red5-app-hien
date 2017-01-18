@@ -550,6 +550,59 @@ private HashMap<String,Integer> HashMap_ClientHash;
 	 		      so_ol.endUpdate();
 	 		    }
 		  }		  
+		  if(agrs.equals("empty"))
+		  {
+			   int client_id =  HashMap_ClientHash.get(client_cer);
+		
+//			  	l.add(command+"-"+String.valueOf(client_id));
+//			  	so_ol.sendMessage("receiveCommand", l);
+			  	System.out.println("Client id: "+client_id);	  
+			    Map online_list = (HashMap)so_ol.getAttribute("ol");
+			    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+			    
+			    //11 = empty
+			    client.setstatus(11);
+			    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+			    System.out.println("Emtpy Value: "+String.valueOf(client.getstatus()));
+			    
+
+			    if (so_ol != null)
+			    {
+			      so_ol.beginUpdate();
+			      so_ol.removeAttribute("ol");
+			      so_ol.setAttribute("ol", online_list);
+			      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+			      so_ol.endUpdate();
+			    }
+		  }
+		  
+		  if(agrs.equals("normal"))
+		  {
+			   int client_id =  HashMap_ClientHash.get(client_cer);
+		
+//			  	l.add(command+"-"+String.valueOf(client_id));
+//			  	so_ol.sendMessage("receiveCommand", l);
+			  	System.out.println("Client id: "+client_id);	  
+			    Map online_list = (HashMap)so_ol.getAttribute("ol");
+			    Client client  = (Client) online_list.get(Integer.valueOf(HashMap_ClientHash.get(client_cer)));
+			    
+			    //1 = normal
+			    client.setstatus(1);
+			    online_list.put(Integer.valueOf(HashMap_ClientHash.get(client_cer)), client);
+
+			    System.out.println("Normal Value: "+String.valueOf(client.getstatus()));
+			    
+
+			    if (so_ol != null)
+			    {
+			      so_ol.beginUpdate();
+			      so_ol.removeAttribute("ol");
+			      so_ol.setAttribute("ol", online_list);
+			      so_ol.setAttribute("count", Integer.valueOf(online_list.size()));
+			      so_ol.endUpdate();
+			    }
+		  }
 		
 	  }
 
